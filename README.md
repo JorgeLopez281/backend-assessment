@@ -38,7 +38,7 @@ docker build -t app . && docker run -it -p 8080:8080 app
 
 Check service is running:
 ```shell
-curl http://localhost:8080
+curl http://localhost:8091
 ```
 
 Execute the following command to test the application:
@@ -101,7 +101,102 @@ Requirements:
 
 Example usage:
 ```shell
-curl -X POST http://localhost:8080/tickets/calculate \
-  -H "Content-Type: application/json" \
-  -d '{"parkingId":"P000123","from":"2024-02-27T09:00:00"}'
+curl --location 'http://localhost:8091/api/v1/tickets' \
+--header 'Content-Type: application/json' \
+--data '{
+    "parkingId": "P000123",
+    "from": "2025-08-30T20:45:00.123",
+    "to": "2025-08-31T12:13:00.123"
+}'
 ```
+
+# Instructions
+
+This project implements a system to calculate the cost of a car's time spent in a given parking lot. The calculation is based on business rules defined for each parking lot.
+
+The microservice has a docker-compose.yml file which contains the configuration needed to launch a PostgreSQL DB image in a Docker container. Just run the **docker-compose up** command.
+
+![img_2.png](src/main/resources/img_2.png)
+
+## Health
+
+The project has implemented Spring Actuator to validate information and the health of the microservice, with the following URLs:
+
+-http://localhost:8091/actuator/health
+
+-http://localhost:8091/actuator/info
+
+## Implementación
+
+To run this project, run the main method of the main class.
+
+## Unit tests
+
+To run unit tests, right-click on the test suite and select "Run tests."
+
+## Api Reference
+
+#### Ticket Creation
+
+```http
+POST api/v1/tickets
+```
+
+| Parameter   | Type     | Description                                        |
+|:------------|:---------|:---------------------------------------------------|
+| `parkingId` | `string` | **Mandatory**. Parking Id                          |
+| `from`      | `string` | **Mandatory**. Date of entry to the establishment  |
+| `to`        | `string` | **Mandatory**. Departure date to the establishment |
+
+### JSON Excample
+
+```json
+{
+  "parkingId": "P000123",
+  "from": "2025-08-31T20:45:00.123",
+  "to": "2025-08-30T12:13:00.123"
+}
+```
+
+### Ejemplo de Respuesta JSON
+
+```json
+{
+  "parkingId": "P000123",
+  "from": "2025-08-30T20:45:00.123",
+  "until": "2025-08-31T12:13:00.123",
+  "durationMinutes": 928,
+  "price": "15 EUR"
+}
+```
+
+## Technology Stack
+
+**Client:** Swagger
+
+**Server:** Java 17, Srping Boot 3.2.3, Gradle, JUnit 5
+
+- To access Swagger, use: [http://localhost:8091/swagger-ui/index.html](http://localhost:8181/swagger-ui/index.html)
+- To access the database hosted in the Docker container, use: ![img.png](src/main/resources/img.png)
+
+
+The class diagram is in the resource package.
+
+classDiagram
+
+    class UserEntity {
+        + id: Long
+        + parkingId: String
+        + fromTime: String
+        + untilTime: String
+        + durationMinutes: Long
+        + priceCents: Integer
+        + currency: String
+        + createdAt: LocalDateTime
+    }
+
+![img_1.png](src/main/resources/img_1.png)
+
+## Autor
+
+- Jorge Lopez.

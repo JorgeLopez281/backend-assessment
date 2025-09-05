@@ -1,22 +1,20 @@
-package io.paymeter.assessment.pricing;
+package io.paymeter.assessment.domain.model.valueobject;
 
-import java.math.BigDecimal;
+import lombok.Getter;
+
 import java.util.Currency;
 import java.util.Objects;
 
 public class Money {
     private static final Currency DEFAULT_CURRENCY = Currency.getInstance("EUR");
 
+    @Getter
     private final int amount;
     private final Currency currency;
 
     public Money(int amount) {
         this.amount = amount;
         this.currency = DEFAULT_CURRENCY;
-    }
-
-    public int getAmount() {
-        return amount;
     }
 
     public String getCurrencyCode() {

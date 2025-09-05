@@ -1,4 +1,4 @@
-package io.paymeter.assessment;
+package io.paymeter.assessment.infrastructure.adapter.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

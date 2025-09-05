@@ -1,0 +1,13 @@
+services:
+  postgres-db:
+    image: postgres:15
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: backend-assessment
+      POSTGRES_USER: equipark
+      POSTGRES_PASSWORD: equipark
+    ports:
+      - "5432:5432"
+#    volumes:
+#      - pgdata:/var/lib/postgresql/data
